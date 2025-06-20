@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CodSoft Quiz Maker</title>
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    // Mock Quiz Data
+    const quizzes = [
+      {
+        id: 1,
+        title: "General Knowledge",
+        questions: [
+          {
+            text: "What is 2+2?",
+            options: ["3", "4", "5"],
+            correctAnswer: "4"
+          }
+        ]
+      }
+    ];
+
+    function QuizMaker() {
+      const [currentQuiz, setCurrentQuiz] = React.useState(null);
+      const [score, setScore] = React.useState(0);
+
+      const handleAnswer = (correctAnswer, selectedAnswer) => {
+        if (selectedAnswer === correctAnswer) setScore(score + 1);
+      };
+
+      return (
+        <div>
+          <h1>CodSoft Quiz Maker</h1>
+          {!currentQuiz ? (
+            quizzes.map(quiz => (
+              <button key={quiz.id} onClick={() => setCurrentQuiz(quiz)}>
+                {quiz.title}
+              </button>
+            ))
+          ) : (
+            <div>
+              <h2>{currentQuiz.title}</h2>
+              {currentQuiz.questions.map((q, i) => (
+                <div key={i}>
+                  <p>{q.text}</p>
+                  {q.options.map((opt, j) => (
+                    <button key={j} onClick={() => handleAnswer(q.correctAnswer, opt)}>
+                      {opt}
+                    </button>
+                  ))}
+                </div>
+              ))}
+              <p>Score: {score}/{currentQuiz.questions.length}</p>
+            </div>
+          )}
+        </div>
+      );
+    }
+
+    ReactDOM.render(<QuizMaker />, document.getElementById('root'));
+  </script>
+  <footer>
+    Developed by <strong>Aryan Dakhare</strong> as a Web Development Intern at <strong>CodSoft</strong>
+  </footer>
+</body>
+</html>
